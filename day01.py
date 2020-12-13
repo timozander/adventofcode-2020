@@ -1,7 +1,7 @@
 import numpy as np
 import itertools
 
-lines = np.loadtxt("day01_input.txt")
+lines = np.loadtxt("input/day01")
 
 
 def solution(r):
