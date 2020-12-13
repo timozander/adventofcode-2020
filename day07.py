@@ -46,15 +46,36 @@ def rule_bfs(key, rules):
     return visited
 
 
+def rule_bfs_amounts(key, rules):
+    visited = []
+    must_contain = []
+    allowed_colors = rules[key]
+
+    while len(allowed_colors) > 0:
+        col, amount = allowed_colors.pop()
+
+        rule = [(item[0], item[1] * amount)
+                for item in rules[col] if item not in visited]
+
+        allowed_colors.extend(rule)
+        must_contain.append((col, amount))
+        visited.append(col)
+
+    return must_contain
+
+
 rules = dict(ChainMap(*[parse_rule(line) for line in lines]))
 
-bfs_rules = []
-for k in rules.keys():
-    bfs_rules.append(rule_bfs(k, rules))
+# Part 1
+# bfs_rules = []
+# for k in rules.keys():
+#     bfs_rules.append(rule_bfs(k, rules))
 
-shiny_rules = list(filter(lambda r: 'shiny gold' in r, bfs_rules))
-print(f'Part 1: {len(shiny_rules)}')
+# shiny_rules = list(filter(lambda r: 'shiny gold' in r, bfs_rules))
+# print(f'Part 1: {len(shiny_rules)}')
 
 
-# print(f'Part 1: {max(seat_ids)}')
-# print(f'Part 2: {np.setdiff1d(all_seats, p2_seat_ids)[0]}')
+shiny_rule_amount = rule_bfs_amounts('shiny gold', rules)
+sumed_amount = sum([item[1] for item in shiny_rule_amount])
+print(shiny_rule_amount)
+print(f'Part 2: {sumed_amount}')
